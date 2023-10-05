@@ -6,7 +6,43 @@ using namespace std;
 class Solution
 {
 	public:
-	//Function to return list containing vertices in Topological order.
+	//Function to return list containing vertices in Topological order
+	void indegree(vector<int> adj[],int n,vector<int> &in){
+	    
+	    for(int i=0;i<n;i++){
+	        
+	        for(auto x:adj[i]){
+	            in[x]++;
+	        }
+	    }
+	}
+	vector<int> bfs(vector<int> adj[],int n,int src){
+	    
+	    vector<int> in(n,0);
+	    indegree(adj,n,in);
+	    queue<int> q;
+	    vector<int> res;
+	    for(int i=0;i<n;i++){
+	        
+	        if(in[i] == 0){
+	            q.push(i);
+	        }
+	    }
+	    
+	    while(!q.empty()){
+	        
+	        int ele=q.front();
+	        q.pop();
+	        res.push_back(ele);
+	        
+	        for(auto x:adj[ele]){
+	            
+	            in[x]--;
+	            if(in[x] == 0) q.push(x);
+	        }
+	    }
+	    return res;
+	}
 	void dfs(vector<int> adj[],int n,int src,int visited[],stack<int> &st){
 	    
 	    visited[src]=1;
@@ -22,20 +58,21 @@ class Solution
 	vector<int> topoSort(int V, vector<int> adj[]) 
 	{
 	    // code here
-	    stack<int> st;
-	    vector<int> res;
-	    int visited[V]={0};
+	   // stack<int> st;
+	   // vector<int> res;
+	   // int visited[V]={0};
 	    
-	    for(int i=0;i<V;++i){
-	        if(!visited[i]){
-	            dfs(adj,V,i,visited,st);
-	        }
-	    }
-	    while(!st.empty()){
-	        res.push_back(st.top());
-	        st.pop();
-	    }
-	    return res;
+	   // for(int i=0;i<V;++i){
+	   //     if(!visited[i]){
+	   //         dfs(adj,V,i,visited,st);
+	   //     }
+	   // }
+	   // while(!st.empty()){
+	   //     res.push_back(st.top());
+	   //     st.pop();
+	   // }
+	   // return res;
+	   return bfs(adj,V,0);
 	}
 };
 
