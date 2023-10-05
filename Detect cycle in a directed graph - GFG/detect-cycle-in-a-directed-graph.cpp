@@ -6,6 +6,35 @@ using namespace std;
 class Solution {
   public:
     // Function to detect cycle in a directed graph.
+    void indegree(vector<int> adj[],int n,vector<int> &in){
+        
+        for(int i=0;i<n;i++){
+            for(auto x:adj[i]) in[x]++;
+        }
+    }
+    bool detectUsingKhans(vector<int> adj[],int n){
+        vector<int> in(n,0);
+        indegree(adj,n,in);
+        queue<int> q;
+        int count=0;
+        for(int i=0;i<n;i++){
+            if(in[i] == 0) q.push(i);
+        }
+        
+        while(!q.empty()){
+            
+            int ele=q.front(); q.pop();
+            count+=1;
+            
+            for(auto x:adj[ele]){
+                
+                in[x]--;
+                if(in[x] == 0) q.push(x);
+            }
+        }
+        return count != n;
+        
+    }
     bool dfs(vector<int> adj[],int n,int src,int visited[],int restack[]){
         
         visited[src]=1;
